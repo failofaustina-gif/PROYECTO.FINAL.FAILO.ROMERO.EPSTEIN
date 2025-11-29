@@ -1,6 +1,6 @@
 # =======================================================================
-# 04_eda.R
-# EDA: estructura, NA, primeras observaciones, gráficos exploratorios
+# 04_eda.R (versión simplificada)
+# EDA: estructura, NA, primeras observaciones, algunos gráficos
 # =======================================================================
 
 library(dplyr)
@@ -10,32 +10,56 @@ library(ggplot2)
 
 base <- read_csv(here("datos","processed","base_processed.csv"))
 
-# dim
+# Dimensiones
 write_csv(
   as.data.frame(dim(base)),
   here("output","tables","dimensiones_base.csv")
 )
 
-# head
+# Primeras observaciones
 write_csv(
-  head(base,20),
+  head(base, 20),
   here("output","tables","head_base.csv")
 )
 
-# NA patterns
+# Resumen de NA
 na_df <- base %>% summarise(across(everything(), ~sum(is.na(.))))
 write_csv(na_df, here("output","tables","na_processed_summary.csv"))
 
-# Histogramas exploratorios
-vars <- c("exports_pct_gdp","imports_pct_gdp","trade_pct_gdp","gdp_growth","ied_pct_gdp","gl_index")
+# --- Gráficos exploratorios mínimos --------------------------------------
 
-for(v in vars){
-  p <- ggplot(base, aes_string(x=v)) +
-    geom_histogram(bins=40, fill="steelblue", alpha=.7) +
-    labs(title=paste("Histograma de", v), x=v)
+# 1) Histograma crecimiento del PBI
+p_gdp <- ggplot(base, aes(x = gdp_growth)) +
+  geom_histogram(bins = 40) +
+  labs(
+    title = "Distribución del crecimiento del PBI",
+    x = "Crecimiento del PBI (% anual)",
+    y = "Frecuencia"
+  )
+ggsave(here("output","figures","hist_gdp_growth.png"),
+       p_gdp, width = 6, height = 4)
 
-  ggsave(here("output","figures", paste0("hist_",v,".png")),
-         p, width=6, height=4)
-}
+# 2) Histograma apertura comercial
+p_trade <- ggplot(base, aes(x = trade_pct_gdp)) +
+  geom_histogram(bins = 40) +
+  labs(
+    title = "Distribución de la apertura comercial",
+    x = "Comercio total (% del PBI)",
+    y = "Frecuencia"
+  )
+ggsave(here("output","figures","hist_trade_pct_gdp.png"),
+       p_trade, width = 6, height = 4)
 
-cat("EDA completado. Tablas y gráficos guardados en output/\n")
+# 3) Histograma índice GL
+p_gl <- ggplot(base, aes(x = gl_index)) +
+  geom_histogram(bins = 40) +
+  labs(
+    title = "Distribución del índice de Grubel-Lloyd",
+    x = "Índice GL",
+    y = "Frecuencia"
+  )
+ggsave(here("output","figures","hist_gl_index.png"),
+       p_gl, width = 6, height = 4)
+
+cat("EDA simplificado completado. Pocas figuras exploratorias generadas.\n")
+
