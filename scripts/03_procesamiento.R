@@ -1,7 +1,6 @@
 # ================================================================
 # 03_procesamiento.R
-# Crea indicadores: comercio total, dependencia externa y
-# volatilidad del crecimiento por país
+# Crea indicadores: apertura comercial y volatilidad del crecimiento
 # ================================================================
 
 library(dplyr)
@@ -12,24 +11,20 @@ base <- read_csv(here("datos", "clean", "base_clean2.csv"))
 
 base_processed <- base %>%
   mutate(
-    trade_total      = exports_pct_gdp + imports_pct_gdp,
-    import_reliance  = ifelse(trade_total > 0,
-                              imports_pct_gdp / trade_total,
-                              NA_real_)
+    trade_total = exports_pct_gdp + imports_pct_gdp  # apertura (% PBI)
   )
 
-# Volatilidad y dependencia promedio por país
+# Indicadores por país
 vol_country <- base_processed %>%
   group_by(country_code, country_name) %>%
   summarise(
-    n_obs              = sum(!is.na(gdp_growth)),
-    vol_growth         = sd(gdp_growth, na.rm = TRUE),
-    mean_growth        = mean(gdp_growth, na.rm = TRUE),
-    import_reliance_avg = mean(import_reliance, na.rm = TRUE),
+    n_obs          = sum(!is.na(gdp_growth)),
+    vol_growth     = sd(gdp_growth, na.rm = TRUE),     # volatilidad
+    mean_growth    = mean(gdp_growth, na.rm = TRUE),   # crecimiento promedio
+    openness_avg   = mean(trade_total, na.rm = TRUE),  # apertura promedio
     .groups = "drop"
   ) %>%
-  # descartamos países con muy pocos datos para que la volatilidad tenga sentido
-  filter(n_obs >= 10)
+  filter(n_obs >= 10)  # descartamos países con muy pocos datos
 
 if (!dir.exists(here("datos", "processed"))) {
   dir.create(here("datos", "processed"), recursive = TRUE)
