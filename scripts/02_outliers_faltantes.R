@@ -19,7 +19,7 @@ na_summary <- base %>%
 
 write_csv(na_summary, here("output", "tables", "na_summary.csv"))
 
-# Detección simple de outliers por regla IQR (solo numéricas)
+# Detección simple de outliers por regla IQR (numéricas)
 detect_outliers <- function(x) {
   if (!is.numeric(x)) return(rep(FALSE, length(x)))
   q1  <- quantile(x, 0.25, na.rm = TRUE)
@@ -34,12 +34,12 @@ outliers_flags <- base %>%
 write_csv(outliers_flags %>% select(ends_with("_outlier")),
           here("output", "tables", "outliers_flags.csv"))
 
-# Decisión de limpieza mínima: solo no permitimos porcentajes negativos
+# Limpieza mínima: no permitimos porcentajes negativos
 base_clean2 <- base %>%
   mutate(
     exports_pct_gdp = ifelse(exports_pct_gdp < 0, NA, exports_pct_gdp),
     imports_pct_gdp = ifelse(imports_pct_gdp < 0, NA, imports_pct_gdp),
-    gdp_growth      = gdp_growth      # no tocamos crecimiento, aunque sea extremo
+    gdp_growth      = gdp_growth
   )
 
 na_summary2 <- base_clean2 %>%
