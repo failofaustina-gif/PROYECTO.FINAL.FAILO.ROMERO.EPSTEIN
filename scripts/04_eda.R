@@ -1,12 +1,58 @@
+# ================================================================
+# 04_eda.R
+# Análisis exploratorio básico
+# ================================================================
+
 library(dplyr)
+library(readr)
 library(here)
+library(ggplot2)
 
-vol <- read.csv(here("datos","processed","volatilidad.csv"))
+base <- read_csv(here("datos", "processed", "base_processed.csv"))
+vol  <- read_csv(here("datos", "processed", "vol_country.csv"))
 
-summary_table <- vol %>%
-  summarise(
-    mean_import_reliance = mean(import_reliance_avg, na.rm = TRUE),
-    mean_vol_growth = mean(vol_growth, na.rm = TRUE)
+if (!dir.exists(here("output", "tables"))) {
+  dir.create(here("output", "tables"), recursive = TRUE)
+}
+if (!dir.exists(here("output", "figures"))) {
+  dir.create(here("output", "figures"), recursive = TRUE)
+}
+
+# Dimensiones
+dims <- tibble(
+  n_filas     = nrow(base),
+  n_columnas  = ncol(base),
+  n_paises    = n_distinct(base$country_code),
+  n_anios     = n_distinct(base$year)
+)
+
+write_csv(dims, here("output", "tables", "dimensiones_base.csv"))
+
+# Primeras observaciones
+write_csv(head(base, 20), here("output", "tables", "head_base.csv"))
+
+# Distribución de crecimiento
+p_gdp <- ggplot(base, aes(x = gdp_growth)) +
+  geom_histogram(bins = 40) +
+  labs(
+    title = "Distribución del crecimiento del PBI",
+    x     = "Crecimiento anual del PBI (%)",
+    y     = "Frecuencia"
   )
 
-write.csv(summary_table, here("output","tables","eda_summary.csv"), row.names = FALSE)
+ggsave(here("output", "figures", "hist_gdp_growth.png"),
+       p_gdp, width = 6, height = 4)
+
+# Distribución de dependencia externa promedio (a nivel país)
+p_ir <- ggplot(vol, aes(x = import_reliance_avg)) +
+  geom_histogram(bins = 30) +
+  labs(
+    title = "Distribución de la dependencia externa promedio",
+    x     = "Import Reliance (promedio país)",
+    y     = "Frecuencia"
+  )
+
+ggsave(here("output", "figures", "hist_import_reliance_avg.png"),
+       p_ir, width = 6, height = 4)
+
+cat("04_eda.R: EDA básico (dimensiones + histogramas) generado\n")
