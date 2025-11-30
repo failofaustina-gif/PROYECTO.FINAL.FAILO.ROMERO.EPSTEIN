@@ -39,7 +39,6 @@ base_clean <- exp %>%
   full_join(imp,    by = c("country_code", "country_name", "year")) %>%
   full_join(growth, by = c("country_code", "country_name", "year"))
 
-# Crear carpeta si no existe
 if (!dir.exists(here("datos", "clean"))) {
   dir.create(here("datos", "clean"), recursive = TRUE)
 }
