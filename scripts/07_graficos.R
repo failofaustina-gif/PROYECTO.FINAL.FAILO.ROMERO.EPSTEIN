@@ -14,6 +14,9 @@ if (!dir.exists(here("output", "figures"))) {
   dir.create(here("output", "figures"), recursive = TRUE)
 }
 
+# Quitamos países sin apertura promedio
+vol <- vol %>% filter(!is.na(openness_avg))
+
 # 1) Scatter apertura vs volatilidad
 g1 <- ggplot(vol, aes(x = openness_avg, y = vol_growth)) +
   geom_point(alpha = 0.6) +
@@ -21,14 +24,14 @@ g1 <- ggplot(vol, aes(x = openness_avg, y = vol_growth)) +
   labs(
     title   = "Apertura comercial y volatilidad del crecimiento",
     x       = "Apertura comercial promedio (% PBI)",
-    y       = "Volatilidad del crecimiento (% PBI)",
+    y       = "Volatilidad del PBI (%)",
     caption = "Fuente: World Development Indicators"
   )
 
 ggsave(here("output", "figures", "grafico_apertura_vs_volatilidad.png"),
        g1, width = 7, height = 5)
 
-# 2) Boxplot por grupo de apertura
+# 2) Boxplot por grupo de apertura (sin NA)
 mediana_ap <- median(vol$openness_avg, na.rm = TRUE)
 
 vol_group <- vol %>%
@@ -52,7 +55,7 @@ g2 <- ggplot(vol_group, aes(x = group, y = vol_growth, fill = group)) +
 ggsave(here("output", "figures", "grafico_boxplot_grupos_apertura.png"),
        g2, width = 7, height = 5)
 
-# 3) Top 20 países más volátiles
+# 3) Top 20 más volátiles (ya sin NA)
 top20 <- vol %>%
   arrange(desc(vol_growth)) %>%
   slice(1:20)
@@ -65,7 +68,7 @@ g3 <- ggplot(top20,
   coord_flip() +
   scale_fill_gradient(low = "steelblue", high = "tomato") +
   labs(
-    title   = "Los 20 países más volátiles y su apertura comercial",
+    title   = "20 países con mayor volatilidad y su apertura comercial",
     x       = "País",
     y       = "Volatilidad del PBI (%)",
     fill    = "Apertura promedio",
@@ -76,4 +79,4 @@ g3 <- ggplot(top20,
 ggsave(here("output", "figures", "grafico_top20_volatilidad.png"),
        g3, width = 7, height = 6)
 
-cat("07_graficos.R: gráficos editoriales generados\n")
+cat("07_graficos.R: gráficos generados sin grupo NA\n")
