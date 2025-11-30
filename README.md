@@ -1,47 +1,46 @@
-Proyecto Final – Análisis del Comercio Internacional y Componente Intraindustrial (GL)
+# Proyecto Final – Comercio Internacional y Comercio Intraindustrial (Índice de Grubel-Lloyd)
 
-Este proyecto analiza cómo varían los patrones comerciales entre países según el grado de comercio intraindustrial, medido por el índice de Grubel-Lloyd (GL).
-El trabajo se organiza siguiendo las reglas de reproducibilidad y estructura de proyectos enseñadas en la materia.
+Este proyecto analiza cómo se comportan los países según su grado de comercio intraindustrial, medido por el índice de Grubel-Lloyd (GL). El objetivo principal es comparar grupos de países y evaluar si aquellos con un GL más elevado presentan patrones comerciales distintos en términos de apertura y equilibrio entre exportaciones e importaciones.
 
-Todos los datos utilizados provienen de World Development Indicators (WDI) – Banco Mundial.
+## 1. Hipótesis del estudio
 
-🧩 1. Hipótesis del estudio
+La hipótesis central propone que los países con un mayor grado de comercio intraindustrial (GL alto) tienden a exhibir:
+- mayores niveles de apertura comercial, y  
+- una estructura comercial más equilibrada entre exportaciones e importaciones.
 
-La hipótesis central del proyecto es:
+El índice de Grubel-Lloyd permite captar cuán simétrico es el comercio de un país: valores altos indican que exporta e importa bienes de categorías similares, mientras que valores bajos reflejan un comercio más especializado o concentrado.
 
-Los países con mayor comercio intraindustrial (índice de Grubel-Lloyd alto) tienden a presentar niveles más elevados de apertura comercial y estructuras comerciales más equilibradas que aquellos con comercio predominantemente interindustrial.
+## 2. Estructura general del proyecto
 
-Esta hipótesis es falsable y puede evaluarse comparando grupos de países según su GL promedio.
+El repositorio respeta la estructura de carpetas de proyectos reproducibles solicitada en la materia:
 
-📂 2. Estructura del proyecto
+datos/raw/ # Datos crudos del Banco Mundial
+datos/clean/ # Datos limpios tras tratamiento mínimo
+datos/processed/ # Datos procesados con variables derivadas, incluido GL
 
-El repositorio sigue estrictamente la estructura solicitada:
+output/tables/ # Tablas finales: NA, outliers, descriptivas, tests, regresiones
+output/figures/ # Gráficos exploratorios y editorializados
 
-PROYECTO.FINAL/
-├── datos/
-│   ├── raw/        # Datos crudos originales descargados del WDI
-│   ├── clean/      # Datos limpios tras tratamiento mínimo
-│   └── processed/  # Datos procesados con variables derivadas (GL)
-│
-├── output/
-│   ├── tables/     # Tablas finales: NA, descriptivas, outliers, test, regresiones
-│   └── figures/    # Gráficos exploratorios y editorializados
-│
-├── scripts/        # Scripts numerados del pipeline reproducible
-└── README.md       # Este archivo
+scripts/ # Scripts numerados 01–07 formando un pipeline secuencial
+README.md # Este archivo
 
-🔄 3. Reproducibilidad del análisis
+shell
+Copiar código
 
-El proyecto está organizado como pipeline secuencial:
-cada script genera productos que luego son usados por el siguiente.
+Cada script genera una salida que es usada por el siguiente, asegurando un flujo ordenado y reproducible.
 
-Para reproducir todo el análisis, simplemente abrir el archivo:
+## 3. Reproducibilidad del análisis
+
+Para reproducir el proyecto completo, basta con abrir:
 
 PROYECTO.FINAL.Rproj
 
+bash
+Copiar código
 
-y ejecutar en R:
+y ejecutar en orden:
 
+```r
 source("scripts/01_import_limpieza.R")
 source("scripts/02_outliers_faltantes.R")
 source("scripts/03_procesamiento.R")
@@ -49,89 +48,61 @@ source("scripts/04_eda.R")
 source("scripts/05_descriptivas.R")
 source("scripts/06_inferencia.R")
 source("scripts/07_graficos.R")
+Esto genera automáticamente:
 
+datos limpios y procesados,
 
-Esto generará:
+tablas del análisis, y
 
-datos limpios → datos/clean/
+todos los gráficos necesarios para la presentación.
 
-datos procesados → datos/processed/
-
-tablas → output/tables/
-
-gráficos → output/figures/
-
-📜 4. Descripción de los scripts
+4. Descripción del pipeline
 01_import_limpieza.R
-
-Importa todas las bases crudas del Banco Mundial, homogeneiza nombres, unifica en una base panel y guarda base_clean.csv.
+Importa los datos crudos del Banco Mundial, unifica nombres y arma la base principal. Exporta base_clean.csv.
 
 02_outliers_faltantes.R
-
-Detecta valores faltantes y outliers, documenta decisiones y genera una versión refinada base_clean2.csv.
+Detecta NA y valores imposibles. Se corrigen únicamente casos no plausibles (por ejemplo, porcentajes negativos). Genera base_clean2.csv.
 
 03_procesamiento.R
-
-Crea variables derivadas, incluyendo el índice de Grubel-Lloyd (GL), y guarda base_processed.csv.
+Crea el índice de Grubel-Lloyd y otras variables derivadas. Guarda base_processed.csv.
 
 04_eda.R
-
-Realiza análisis exploratorio: dimensiones, primeras observaciones, NA y histogramas descriptivos.
+Realiza el análisis exploratorio: dimensiones, primeras observaciones, NA y distribuciones básicas mediante histogramas.
 
 05_descriptivas.R
-
-Calcula estadísticas descriptivas y genera boxplots básicos (crecimiento, apertura y GL).
+Calcula estadísticas descriptivas de comercio, crecimiento y GL. Produce boxplots básicos para visualizar dispersión.
 
 06_inferencia.R
-
-Divide países según GL promedio (GL alto vs GL bajo), genera la tabla comparativa, realiza test de diferencias de medias y corre una regresión exploratoria del crecimiento económico.
+Agrupa países según GL promedio en “GL alto” y “GL bajo”, construye una tabla comparativa, ejecuta pruebas de diferencia de medias en apertura y desequilibrio comercial, y corre una regresión exploratoria del crecimiento.
 
 07_graficos.R
+Genera los gráficos editorializados del trabajo:
 
-Produce gráficos editorializados para storytelling:
+un boxplot de apertura comercial para GL alto vs GL bajo,
 
-boxplot de apertura según grupo GL
+y una dispersión entre GL promedio y apertura promedio.
 
-dispersión GL vs apertura promedio
+Estos gráficos se utilizan directamente en la presentación final.
 
-📊 5. Resultados principales
+5. Resultados principales
+Los países con GL alto muestran, en promedio, una apertura comercial mayor y un comercio más equilibrado que los países con GL bajo. La prueba de diferencias de medias respalda esta relación de manera estadística. Esto sugiere que el comercio intraindustrial está asociado a una mayor integración con el comercio mundial y a estructuras comerciales menos asimétricas.
 
-Los análisis muestran que:
+La relación entre GL y el crecimiento del PBI no aparece como significativa, lo cual coincide con el enfoque teórico de que el GL describe la estructura del comercio, no necesariamente la performance macroeconómica de corto plazo.
 
-Los países con GL alto tienden a tener mayor apertura comercial.
+6. Datos utilizados
+Todos los datos provienen del World Development Indicators (Banco Mundial) e incluyen:
 
-También presentan menor desequilibrio entre exportaciones e importaciones.
+exportaciones e importaciones como % del PBI,
 
-El test de diferencias de medias confirma que esta diferencia es estadísticamente significativa.
+comercio total como % del PBI,
 
-La hipótesis queda respaldada por los datos.
+crecimiento del PBI real,
 
-No se observa una relación fuerte entre GL y crecimiento económico, lo cual coincide con la literatura: el GL describe estructura comercial, no necesariamente desempeño macroeconómico de corto plazo.
+inversión extranjera directa.
 
-🧠 6. Gráficos más importantes
+Los datos crudos están disponibles en datos/raw/, acompañados de sus versiones limpias y procesadas utilizadas durante el análisis.
 
-boxplot_apertura_por_grupo_gl.png: muestra la diferencia de apertura entre países GL alto y GL bajo.
-
-dispersion_gl_vs_apertura.png: muestra cómo aumentos en comercio intraindustrial se asocian a niveles superiores de apertura comercial.
-
-📎 7. Datos utilizados
-
-Todos los datos provienen del Banco Mundial – World Development Indicators:
-
-Exportaciones (% PBI)
-
-Importaciones (% PBI)
-
-Comercio total (% PBI)
-
-Crecimiento del PBI real
-
-Inversión extranjera directa (% PBI)
-
-Los archivos crudos se encuentran en datos/raw/.
-
-✔️ 8. Autores
-
+7. Autores
 Faustina Faílo
-Bautista Romero
-Gian Epstein
+Federico Romero
+Julia Epstein
