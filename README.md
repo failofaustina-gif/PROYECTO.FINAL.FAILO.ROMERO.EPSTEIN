@@ -28,24 +28,21 @@ Los archivos originales están en:
 datos/raw/
 
 3. Estructura del proyecto
-
-El repositorio sigue una estructura reproducible estándar:
-
 datos/
-  raw/          # Datos originales
-  clean/        # Datos limpios
-  processed/    # Datos procesados (indicadores)
+  raw/          
+  clean/        
+  processed/    
 
 output/
-  tables/       # Tablas de resultados (tests, descriptivas, comparativas)
-  figures/      # Gráficos exploratorios y editoriales
+  tables/       
+  figures/      
 
-scripts/        # Scripts numerados del pipeline
+scripts/        
 README.md
 PROYECTO.FINAL.Rproj
 
 
-Cada script toma como entrada el resultado del script anterior, garantizando autocontención y reproducibilidad.
+Cada script toma como entrada el resultado del anterior.
 
 4. Cómo reproducir el análisis
 
@@ -75,119 +72,72 @@ gráficos exploratorios y editoriales finales.
 5. Descripción de los scripts
 01_import_limpieza.R
 
-Importa las bases crudas, estandariza nombres de variables, unifica las series y genera base_clean.csv.
+Importa datos crudos, estandariza nombres y genera base_clean.csv.
 
 02_outliers_faltantes.R
 
-Detecta NA y posibles outliers mediante la regla IQR. Documenta decisiones.
-Produce base_clean2.csv y reportes en output/tables/.
+Detecta valores faltantes y outliers. Produce reportes y base_clean2.csv.
 
 03_procesamiento.R
 
-Crea los indicadores claves:
+Calcula indicadores:
 
-trade_total (apertura comercial)
+apertura comercial (trade_total, openness_avg)
 
-openness_avg (apertura promedio del país)
+volatilidad (vol_growth)
 
-vol_growth (volatilidad del crecimiento)
-
-Genera base_processed.csv y vol_country.csv.
+Guarda base_processed.csv y vol_country.csv.
 
 04_eda.R
 
-Análisis exploratorio:
-
-dimensiones de la base
-
-primeras observaciones
-
-histograma del crecimiento del PBI
-
-histograma de apertura comercial promedio
+EDA básico: histogramas, primeras observaciones, dimensiones.
 
 05_descriptivas.R
 
 Estadísticas descriptivas de apertura y volatilidad.
-Incluye un boxplot general de volatilidad para evaluar dispersión y extremos.
 
 06_inferencia.R
 
-Análisis inferencial:
+Clasificación de países por apertura
 
-clasificación de países según apertura (alta vs baja)
+Test t
 
-tabla comparativa de medias y dispersión
-
-test t de diferencia de medias
-
-regresión lineal simple (volatilidad ~ apertura)
-
-Resultados guardados en output/tables/.
+Regresión lineal simple
+Guarda tablas en output/tables/.
 
 07_graficos.R
 
-Genera los gráficos editoriales finales:
-
-Relación apertura–volatilidad
-
-Comparación entre grupos
-
-Ranking de los 20 países más volátiles
-
-Guardados en output/figures/.
+Genera los gráficos finales:
+relación apertura–volatilidad, boxplot por grupos y top20 de países volátiles.
 
 6. Gráficos del estudio
-grafico_apertura_vs_volatilidad.png
 
-Muestra la relación entre la apertura comercial promedio y la volatilidad del crecimiento.
-Sirve para evaluar directamente la hipótesis.
+grafico_apertura_vs_volatilidad.png
+Relación entre apertura comercial y volatilidad del crecimiento. Evalúa la hipótesis.
 
 grafico_boxplot_grupos_apertura.png
-
-Compara la volatilidad entre países altamente abiertos y países poco abiertos.
-Visualiza si un grupo es más estable que el otro.
+Compara la volatilidad entre países muy abiertos y poco abiertos.
 
 grafico_top20_volatilidad.png
+Ranking de países más volátiles con su nivel de apertura.
 
-Lista los 20 países más volátiles e identifica su nivel de apertura.
-Ayuda a interpretar el perfil de las economías más inestables.
-
-(EDA opcional)
-
-hist_gdp_growth.png: distribución del crecimiento del PBI.
-
-hist_openness_avg.png: distribución de apertura comercial.
-
-boxplot_volatilidad.png: dispersión general de volatilidad.
+(Exploratorios)
+hist_gdp_growth.png, hist_openness_avg.png, boxplot_volatilidad.png.
 
 7. Principales resultados
 
-La relación lineal entre apertura comercial y volatilidad del crecimiento es leve pero negativa, coherente con la hipótesis.
+La relación entre apertura comercial y volatilidad es leve pero negativa.
 
-Al separar los países por nivel de apertura, se observa que el grupo de alta apertura tiende a mostrar menor volatilidad.
+Los países con mayor apertura tienden a presentar menor volatilidad.
 
 El test t detecta diferencias entre grupos, aunque moderadas.
 
-La regresión lineal muestra un coeficiente negativo (mayor apertura → menor volatilidad), apoyando la hipótesis, aunque con una intensidad reducida.
+La regresión lineal respalda la hipótesis, pero con un efecto pequeño.
 
 8. Conclusión
 
-La evidencia empírica apoya parcialmente la hipótesis planteada.
-Los datos muestran que los países más abiertos al comercio exhiben, en promedio, menor volatilidad del crecimiento, aunque la relación no es extremadamente fuerte.
+La evidencia empírica apoya parcialmente la hipótesis:
+los países con mayor apertura comercial muestran, en promedio, menor volatilidad del crecimiento.
 
-En conjunto, los resultados sugieren que la integración comercial contribuye a estabilizar las fluctuaciones del PBI, posiblemente gracias a:
+Esto sugiere que la integración comercial podría actuar como un mecanismo estabilizador, al diversificar mercados y amortiguar shocks internos.
 
-mayor diversificación productiva,
-
-mejor acceso a mercados externos,
-
-mayor capacidad de absorber shocks sectoriales.
-
-9. Autores
-
-Faustina Faílo
-
-Federico Romero
-
-Julia Epstein
