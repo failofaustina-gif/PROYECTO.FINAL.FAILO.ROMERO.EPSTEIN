@@ -24,9 +24,6 @@ output/figures/ # Gráficos exploratorios y editorializados
 scripts/ # Scripts numerados 01–07 formando un pipeline secuencial
 README.md # Este archivo
 
-shell
-Copiar código
-
 Cada script genera una salida que es usada por el siguiente, asegurando un flujo ordenado y reproducible.
 
 ## 3. Reproducibilidad del análisis
@@ -35,10 +32,9 @@ Para reproducir el proyecto completo, basta con abrir:
 
 PROYECTO.FINAL.Rproj
 
-bash
-Copiar código
+y ejecutar en orden los siguientes scripts:
 
-y ejecutar en orden:
+y ejecutar en orden los siguientes scripts:
 
 ```r
 source("scripts/01_import_limpieza.R")
@@ -48,15 +44,16 @@ source("scripts/04_eda.R")
 source("scripts/05_descriptivas.R")
 source("scripts/06_inferencia.R")
 source("scripts/07_graficos.R")
+```
+
 Esto genera automáticamente:
 
-datos limpios y procesados,
-
-tablas del análisis, y
-
-todos los gráficos necesarios para la presentación.
+- datos limpios y procesados,  
+- tablas del análisis,  
+- y todos los gráficos necesarios para la presentación.
 
 4. Descripción del pipeline
+
 01_import_limpieza.R
 Importa los datos crudos del Banco Mundial, unifica nombres y arma la base principal. Exporta base_clean.csv.
 
@@ -85,11 +82,13 @@ y una dispersión entre GL promedio y apertura promedio.
 Estos gráficos se utilizan directamente en la presentación final.
 
 5. Resultados principales
+
 Los países con GL alto muestran, en promedio, una apertura comercial mayor y un comercio más equilibrado que los países con GL bajo. La prueba de diferencias de medias respalda esta relación de manera estadística. Esto sugiere que el comercio intraindustrial está asociado a una mayor integración con el comercio mundial y a estructuras comerciales menos asimétricas.
 
 La relación entre GL y el crecimiento del PBI no aparece como significativa, lo cual coincide con el enfoque teórico de que el GL describe la estructura del comercio, no necesariamente la performance macroeconómica de corto plazo.
 
 6. Datos utilizados
+
 Todos los datos provienen del World Development Indicators (Banco Mundial) e incluyen:
 
 exportaciones e importaciones como % del PBI,
@@ -103,6 +102,7 @@ inversión extranjera directa.
 Los datos crudos están disponibles en datos/raw/, acompañados de sus versiones limpias y procesadas utilizadas durante el análisis.
 
 7. Autores
+
 Faustina Faílo
 Federico Romero
 Julia Epstein
