@@ -1,48 +1,60 @@
-Comercio Internacional y Volatilidad Macroeconómica
-1. Objetivo del estudio
+# Proyecto Final – Comercio Internacional y Volatilidad Macroeconómica
 
-El proyecto analiza si el grado de apertura comercial de un país está asociado con su volatilidad del crecimiento económico.
+## 1. Objetivo del estudio
+El proyecto analiza si la estructura comercial de un país y su nivel de apertura económica se relacionan con la volatilidad del crecimiento del PBI.
 
-Hipótesis
+**Hipótesis de trabajo:**  
+Los países con mayor apertura comercial presentan mayor volatilidad en su crecimiento económico.
 
-Los países con mayor apertura comercial presentan una volatilidad del crecimiento más elevada.
+Esta hipótesis se evalúa comparando:  
+- la apertura comercial promedio (% del PBI), y  
+- la volatilidad del crecimiento (desvío estándar del crecimiento anual).
 
-2. Datos utilizados
+---
 
-Fuente: World Development Indicators (Banco Mundial).
+## 2. Datos utilizados
+Fuente: **World Development Indicators – Banco Mundial**  
+Series anuales utilizadas:
+- Exportaciones (% del PBI)
+- Importaciones (% del PBI)
+- Apertura comercial total (% del PBI)
+- Crecimiento del PBI real (% anual)
 
-Variables:
+Los archivos originales están en:  
+`datos/raw/`
 
-Exportaciones (% PBI)
+---
 
-Importaciones (% PBI)
+## 3. Estructura del proyecto
 
-Crecimiento del PBI real (% anual)
+```
+proyecto/
+ ├── datos/
+ │    ├── raw/          # Datos originales
+ │    ├── clean/        # Datos limpios
+ │    └── processed/    # Indicadores procesados
+ │
+ ├── output/
+ │    ├── tables/       # Tablas finales
+ │    └── figures/      # Gráficos finales
+ │
+ ├── scripts/           # Scripts numerados
+ ├── PROYECTO.FINAL.Rproj
+ └── README.md
+```
 
-Datos originales en:
+Cada script usa como entrada el resultado del anterior.  
+El pipeline es totalmente reproducible.
 
-datos/raw/
+---
 
-3. Estructura del proyecto
-datos/
-  raw/
-  clean/
-  processed/
+## 4. Cómo reproducir el análisis
 
-output/
-  tables/
-  figures/
-
-scripts/
-README.md
-PROYECTO.FINAL.Rproj
-
-4. Cómo reproducir el análisis
-
-Abrir PROYECTO.FINAL.Rproj en RStudio.
+Abrir el archivo **PROYECTO.FINAL.Rproj** en RStudio.
 
 Ejecutar los scripts en este orden:
 
+```r
 source("scripts/01_import_limpieza.R")
 source("scripts/02_outliers_faltantes.R")
 source("scripts/03_procesamiento.R")
@@ -50,54 +62,68 @@ source("scripts/04_eda.R")
 source("scripts/05_descriptivas.R")
 source("scripts/06_inferencia.R")
 source("scripts/07_graficos.R")
-
+```
 
 Esto genera automáticamente:
+- datos limpios y procesados (en `datos/`),
+- tablas de análisis (en `output/tables/`),
+- gráficos finales (en `output/figures/`).
 
-datos limpios y procesados (carpeta datos/)
+---
 
-tablas (output/tables/)
+## 5. Descripción de los scripts
 
-gráficos finales (output/figures/)
+### **01_import_limpieza.R**
+Importa las bases crudas, estandariza nombres y genera `base_clean.csv`.
 
-5. Scripts
+### **02_outliers_faltantes.R**
+Detecta NA y outliers (regla IQR).  
+Guarda reportes en `output/tables/`.
 
-01_import_limpieza.R: importa datos crudos y genera base_clean.csv.
-02_outliers_faltantes.R: detecta NA/outliers y genera base_clean2.csv.
-03_procesamiento.R: crea indicadores y produce base_processed.csv.
-04_eda.R: gráficos y exploración inicial.
-05_descriptivas.R: estadísticas descriptivas.
-06_inferencia.R: test t y regresión.
-07_graficos.R: gráficos finales editoriales.
+### **03_procesamiento.R**
+Construye los indicadores:
+- apertura comercial,
+- volatilidad del crecimiento por país.  
+Genera `base_processed.csv` y `vol_country.csv`.
 
-6. Gráficos del estudio
+### **04_eda.R**
+Análisis exploratorio: histogramas de crecimiento y apertura.
 
-grafico_apertura_vs_volatilidad.png → relación directa entre apertura y volatilidad.
-grafico_boxplot_grupos_apertura.png → comparación entre países más y menos abiertos.
-grafico_top20_volatilidad.png → países más volátiles.
+### **05_descriptivas.R**
+Estadísticas descriptivas clave y boxplot general de volatilidad.
 
-EDA opcional:
+### **06_inferencia.R**
+- Clasificación en países de alta vs baja apertura  
+- Test t de medias  
+- Regresión lineal simple  
+Resultados guardados en `output/tables/`.
 
-hist_gdp_growth.png
+### **07_graficos.R**
+Gráficos finales:
+- apertura vs volatilidad  
+- comparación por grupos  
+- ranking top 20 países más volátiles  
 
-hist_import_reliance_avg.png
+---
 
-boxplot_volatilidad.png
+## 6. Principales resultados
 
-7. Resultados
+- La relación estadística entre apertura y volatilidad es **débil**.  
+- El test t no muestra diferencias significativas entre países muy abiertos y poco abiertos.  
+- La regresión lineal confirma que la apertura explica muy poco de la volatilidad.  
+- Los países más volátiles suelen ser economías dependientes de commodities o afectadas por shocks políticos.
 
-No se confirma que mayor apertura implique mayor volatilidad.
+---
 
-Países de baja apertura suelen ser más volátiles por especialización productiva.
+## 7. Conclusión
 
-La regresión muestra relación débil.
+La evidencia empírica **no confirma la hipótesis** de que mayor apertura comercial implique mayor volatilidad.  
+La estabilidad macroeconómica parece depender más de la **diversificación productiva** y del tipo de shocks externos a los que cada país está expuesto.
 
-8. Conclusión
+---
 
-La volatilidad macroeconómica está más asociada a la diversificación productiva que al grado de apertura comercial.
+## 8. Autores
 
-9. Autores
-
-Faustina Faílo
-Federico Romero
-Julia Epstein
+- Faustina Faílo  
+- Federico Romero  
+- Julia Epstein  
