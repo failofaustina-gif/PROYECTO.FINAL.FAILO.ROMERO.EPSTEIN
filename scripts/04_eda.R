@@ -18,7 +18,6 @@ if (!dir.exists(here("output", "figures"))) {
   dir.create(here("output", "figures"), recursive = TRUE)
 }
 
-# Dimensiones
 dims <- tibble(
   n_filas     = nrow(base),
   n_columnas  = ncol(base),
@@ -27,11 +26,9 @@ dims <- tibble(
 )
 
 write_csv(dims, here("output", "tables", "dimensiones_base.csv"))
-
-# Primeras observaciones
 write_csv(head(base, 20), here("output", "tables", "head_base.csv"))
 
-# Distribución de crecimiento
+# Hist crecimiento anual
 p_gdp <- ggplot(base, aes(x = gdp_growth)) +
   geom_histogram(bins = 40) +
   labs(
@@ -43,16 +40,16 @@ p_gdp <- ggplot(base, aes(x = gdp_growth)) +
 ggsave(here("output", "figures", "hist_gdp_growth.png"),
        p_gdp, width = 6, height = 4)
 
-# Distribución de dependencia externa promedio (a nivel país)
-p_ir <- ggplot(vol, aes(x = import_reliance_avg)) +
+# Hist apertura promedio país
+p_open <- ggplot(vol, aes(x = openness_avg)) +
   geom_histogram(bins = 30) +
   labs(
-    title = "Distribución de la dependencia externa promedio",
-    x     = "Import Reliance (promedio país)",
+    title = "Distribución de la apertura comercial promedio",
+    x     = "Apertura comercial promedio (% PBI)",
     y     = "Frecuencia"
   )
 
-ggsave(here("output", "figures", "hist_import_reliance_avg.png"),
-       p_ir, width = 6, height = 4)
+ggsave(here("output", "figures", "hist_openness_avg.png"),
+       p_open, width = 6, height = 4)
 
-cat("04_eda.R: EDA básico (dimensiones + histogramas) generado\n")
+cat("04_eda.R: EDA básico generado\n")
