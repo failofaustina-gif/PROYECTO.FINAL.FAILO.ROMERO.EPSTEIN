@@ -1,29 +1,23 @@
 Proyecto Final – Comercio Internacional y Volatilidad Macroeconómica
 1. Objetivo del estudio
 
-El proyecto analiza si la estructura del comercio exterior de un país —especialmente su nivel de dependencia externa— se asocia con una mayor o menor volatilidad del crecimiento económico.
+El proyecto analiza si la estructura del comercio exterior —en particular la dependencia externa— se relaciona con la volatilidad del crecimiento económico.
 
-Hipótesis de trabajo
+Hipótesis
 
-Los países con mayor dependencia externa presentan una mayor volatilidad del crecimiento del PBI.
-
-Se compara:
-
-la dependencia externa promedio de cada país
-
-la volatilidad del crecimiento, medida como el desvío estándar del crecimiento anual del PBI
+Los países con mayor dependencia externa presentan mayor volatilidad del crecimiento del PBI.
 
 2. Datos utilizados
 
-Todos los datos provienen de World Development Indicators (Banco Mundial):
+Datos provenientes de World Development Indicators:
 
-Exportaciones (% PBI)
+Importaciones (% del PBI)
 
-Importaciones (% PBI)
+Exportaciones (% del PBI)
 
 Crecimiento del PBI real (% anual)
 
-Datos crudos ubicados en:
+Los datos crudos están en:
 
 datos/raw/
 
@@ -41,70 +35,52 @@ scripts/
 PROYECTO.FINAL.Rproj
 README.md
 
-
-Cada script toma como entrada la salida del anterior → análisis 100% reproducible.
-
 4. Cómo reproducir el análisis
 
-Abrir el archivo PROYECTO.FINAL.Rproj en RStudio y ejecutar en este orden:
+Descargar o clonar el repositorio.
 
-    source("scripts/01_import_limpieza.R")
-    source("scripts/02_outliers_faltantes.R")
-    source("scripts/03_procesamiento.R")
-    source("scripts/04_eda.R")
-    source("scripts/05_descriptivas.R")
-    source("scripts/06_inferencia.R")
-    source("scripts/07_graficos.R")
+Abrir PROYECTO.FINAL.Rproj en RStudio.
+
+Ejecutar los scripts en este orden:
+
+source("scripts/01_import_limpieza.R")
+source("scripts/02_outliers_faltantes.R")
+source("scripts/03_procesamiento.R")
+source("scripts/04_eda.R")
+source("scripts/05_descriptivas.R")
+source("scripts/06_inferencia.R")
+source("scripts/07_graficos.R")
 
 
 Esto genera automáticamente:
 
-datos limpios y procesados (datos/)
+datos limpios y procesados
 
-tablas (output/tables/)
+tablas en output/tables/
 
-gráficos finales (output/figures/)
+gráficos en output/figures/
 
-5. Descripción breve de los scripts
+5. Breve descripción de los scripts
 
-01_import_limpieza.R → importa datos y genera base_clean.csv.
-02_outliers_faltantes.R → detecta NA/outliers y crea reportes.
-03_procesamiento.R → calcula import reliance y volatilidad.
-04_eda.R → descripciones básicas e histogramas.
-05_descriptivas.R → estadísticos de dependencia y volatilidad.
-06_inferencia.R → test t y regresión entre grupos.
-07_graficos.R → gráficos editoriales finales.
+01_import_limpieza.R — Importa datos crudos y genera base_clean.csv.
+02_outliers_faltantes.R — Detecta NA/outliers y genera reportes.
+03_procesamiento.R — Calcula dependencia externa y volatilidad.
+04_eda.R — Exploración inicial e histogramas.
+05_descriptivas.R — Estadísticas descriptivas.
+06_inferencia.R — Diferencias entre grupos y regresión.
+07_graficos.R — Gráficos editoriales finales.
 
 6. Gráficos principales
 
-grafico_dependencia_vs_volatilidad.png
-Relación entre dependencia externa y volatilidad del crecimiento.
+grafico_dependencia_vs_volatilidad.png — relación entre dependencia y volatilidad.
+grafico_boxplot_grupos.png — volatilidad según grupos de dependencia.
+grafico_top20_volatilidad.png — países más volátiles.
 
-grafico_boxplot_grupos.png
-Comparación entre países muy dependientes y poco dependientes.
+7. Resultados
 
-grafico_top20_volatilidad.png
-Ranking de los 20 países más volátiles.
+La relación entre dependencia externa y volatilidad es débil, y no confirma la hipótesis inicial.
 
-(EDA opcional)
-histogramas y boxplots para ver distribución de variables.
-
-7. Principales resultados
-
-La relación lineal entre dependencia externa y volatilidad es débil.
-
-Los países con baja dependencia externa muestran mayor dispersión en volatilidad.
-
-El test t detecta diferencias, pero no concluyentes.
-
-La regresión simple muestra un coeficiente negativo, aunque débil.
-
-8. Conclusión
-
-La evidencia no confirma la hipótesis inicial.
-La volatilidad parece explicarse más por diversificación productiva que por nivel de dependencia externa.
-
-9. Autores
+8. Autores
 
 Faustina Faílo
 
