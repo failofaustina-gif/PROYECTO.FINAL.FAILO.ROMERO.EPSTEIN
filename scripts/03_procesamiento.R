@@ -1,25 +1,21 @@
-# =======================================================================
-# 03_procesamiento.R
-# Crea variables derivadas (GL, desequilibrio) y guarda base_processed.csv
-# =======================================================================
-
 library(dplyr)
-library(readr)
 library(here)
 
-base <- read_csv(here("datos","clean","base_clean2.csv"))
+base <- read.csv(here("datos","clean","base_clean2.csv"))
 
-base_processed <- base %>%
+# Crear dependencia externa (Import Reliance)
+base <- base %>%
   mutate(
-    sum_xm  = exports_pct_gdp + imports_pct_gdp,
-    dif_xm  = abs(exports_pct_gdp - imports_pct_gdp),
-    gl_index = ifelse(sum_xm > 0, 1 - dif_xm / sum_xm, NA_real_)
+    trade_total = exports_pct_gdp + imports_pct_gdp,
+    import_reliance = ifelse(trade_total > 0, imports_pct_gdp / trade_total, NA)
   )
 
-if (!dir.exists(here("datos","processed"))) {
-  dir.create(here("datos","processed"), recursive = TRUE)
-}
+# Volatilidad del crecimiento por país
+volatilidad <- base %>%
+  group_by(country_code, country_name) %>%
+  summarise(vol_growth = sd(gdp_growth, na.rm = TRUE),
+            import_reliance_avg = mean(import_reliance, na.rm = TRUE),
+            .groups = "drop")
 
-write_csv(base_processed, here("datos","processed","base_processed.csv"))
-
-cat("03_procesamiento.R: base_processed.csv creado en datos/processed/\n")
+write.csv(base, here("datos","processed","base_processed.csv"), row.names = FALSE)
+write.csv(volatilidad, here("datos","processed","volatilidad.csv"), row.names = FALSE)
