@@ -63,11 +63,17 @@ gráficos en output/figures/
 5. Breve descripción de los scripts
 
 01_import_limpieza.R — Importa datos crudos y genera base_clean.csv.
+
 02_outliers_faltantes.R — Detecta NA/outliers y genera reportes.
+
 03_procesamiento.R — Calcula dependencia externa y volatilidad.
+
 04_eda.R — Exploración inicial e histogramas.
+
 05_descriptivas.R — Estadísticas descriptivas.
+
 06_inferencia.R — Diferencias entre grupos y regresión.
+
 07_graficos.R — Gráficos editoriales finales.
 
 6. Gráficos principales
