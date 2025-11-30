@@ -1,35 +1,35 @@
-Proyecto Final — Apertura Comercial y Volatilidad Macroeconómica
+Proyecto Final – Comercio Internacional y Volatilidad Macroeconómica
 1. Objetivo del estudio
 
-El proyecto analiza si el grado de integración comercial de un país, medido a través de su apertura comercial, se asocia con la volatilidad del crecimiento económico.
+El proyecto analiza si el grado de apertura comercial de un país —medido como la suma de exportaciones e importaciones en relación al PBI— se asocia con una mayor o menor volatilidad del crecimiento económico.
 
 Hipótesis de trabajo
 
-Los países con mayor apertura comercial (exportaciones + importaciones como porcentaje del PBI) presentan menor volatilidad en su crecimiento económico.
+Los países con mayor apertura comercial presentan menor volatilidad en su crecimiento económico.
 
-Esto se evalúa midiendo, para cada país:
+La hipótesis se evalúa comparando:
 
-su apertura promedio,
+la apertura comercial promedio por país, y
 
-la volatilidad del crecimiento, definida como el desvío estándar del crecimiento anual del PBI real.
+la volatilidad del crecimiento, medida como el desvío estándar del crecimiento anual del PBI real.
 
 2. Datos utilizados
 
-Los datos provienen de World Development Indicators (Banco Mundial):
+Todos los datos provienen de World Development Indicators (Banco Mundial):
 
-Exportaciones de bienes y servicios (% del PBI)
+Exportaciones de bienes y servicios (% PBI)
 
-Importaciones de bienes y servicios (% del PBI)
+Importaciones de bienes y servicios (% PBI)
 
 Crecimiento del PBI real (% anual)
 
-Los archivos originales se encuentran en la carpeta:
+Los archivos originales están en:
 
 datos/raw/
 
 3. Estructura del proyecto
 
-El repositorio sigue una estructura reproducible:
+El repositorio sigue una estructura reproducible estándar:
 
 datos/
   raw/          # Datos originales
@@ -37,39 +37,24 @@ datos/
   processed/    # Datos procesados (indicadores)
 
 output/
-  tables/       # Tablas del análisis
-  figures/      # Gráficos del análisis
+  tables/       # Tablas de resultados (tests, descriptivas, comparativas)
+  figures/      # Gráficos exploratorios y editoriales
 
 scripts/        # Scripts numerados del pipeline
 README.md
 PROYECTO.FINAL.Rproj
 
 
-Cada script toma como entrada la salida del anterior y genera resultados reproducibles.
+Cada script toma como entrada el resultado del script anterior, garantizando autocontención y reproducibilidad.
 
 4. Cómo reproducir el análisis
 
-Para ejecutar el pipeline completo que produce todos los datos limpios, indicadores, tablas y gráficos:
+Descargar o clonar el repositorio.
 
-1. Descargar o clonar el repositorio
-git clone https://github.com/failofaustina-gif/PROYECTO.FINAL.FAILO.ROMERO.EPSTEIN.git
+Abrir PROYECTO.FINAL.Rproj en RStudio.
 
+Ejecutar, en este orden:
 
-O descargar el ZIP desde GitHub.
-
-2. Abrir el proyecto en RStudio
-
-Abrir el archivo:
-
-PROYECTO.FINAL.Rproj
-
-
-Esto permite que los paths funcionen correctamente mediante {here}.
-
-3. Instalar los paquetes necesarios (solo la primera vez)
-install.packages(c("dplyr", "readr", "ggplot2", "here"))
-
-4. Ejecutar los scripts en orden
 source("scripts/01_import_limpieza.R")
 source("scripts/02_outliers_faltantes.R")
 source("scripts/03_procesamiento.R")
@@ -79,42 +64,39 @@ source("scripts/06_inferencia.R")
 source("scripts/07_graficos.R")
 
 
-Al finalizar, se generan automáticamente:
+Esto genera automáticamente:
 
-datos limpios en datos/clean/
+datos limpios y procesados,
 
-datos procesados en datos/processed/
+tablas de análisis,
 
-tablas del análisis en output/tables/
-
-gráficos finales en output/figures/
-
-No debe modificarse ningún path. El análisis es totalmente reproducible.
+gráficos exploratorios y editoriales finales.
 
 5. Descripción de los scripts
 01_import_limpieza.R
 
-Importa las bases crudas de exportaciones, importaciones y crecimiento del PBI. Unifica nombres y genera base_clean.csv.
+Importa las bases crudas, estandariza nombres de variables, unifica las series y genera base_clean.csv.
 
 02_outliers_faltantes.R
 
-Identifica y cuantifica datos faltantes, detecta outliers mediante la regla IQR y documenta decisiones. Genera base_clean2.csv.
+Detecta NA y posibles outliers mediante la regla IQR. Documenta decisiones.
+Produce base_clean2.csv y reportes en output/tables/.
 
 03_procesamiento.R
 
-Crea los indicadores centrales:
+Crea los indicadores claves:
 
-apertura comercial (trade_total)
+trade_total (apertura comercial)
 
-apertura promedio por país (openness_avg)
+openness_avg (apertura promedio del país)
 
-volatilidad del crecimiento (vol_growth)
+vol_growth (volatilidad del crecimiento)
 
-Genera base_processed.csv (panel país-año) y vol_country.csv (indicadores agregados).
+Genera base_processed.csv y vol_country.csv.
 
 04_eda.R
 
-Realiza el análisis exploratorio:
+Análisis exploratorio:
 
 dimensiones de la base
 
@@ -122,65 +104,87 @@ primeras observaciones
 
 histograma del crecimiento del PBI
 
-histograma de apertura promedio
+histograma de apertura comercial promedio
 
 05_descriptivas.R
 
-Calcula estadísticas descriptivas de apertura y volatilidad, y genera un boxplot general de volatilidad.
+Estadísticas descriptivas de apertura y volatilidad.
+Incluye un boxplot general de volatilidad para evaluar dispersión y extremos.
 
 06_inferencia.R
 
-Implementa el análisis inferencial:
+Análisis inferencial:
 
-división de países en alta vs baja apertura (según mediana)
+clasificación de países según apertura (alta vs baja)
 
-tabla comparativa
+tabla comparativa de medias y dispersión
 
 test t de diferencia de medias
 
-regresión: volatilidad ~ apertura
+regresión lineal simple (volatilidad ~ apertura)
+
+Resultados guardados en output/tables/.
 
 07_graficos.R
 
-Genera los gráficos finales del estudio:
+Genera los gráficos editoriales finales:
 
-relación apertura–volatilidad
+Relación apertura–volatilidad
 
-volatilidad por grupos
+Comparación entre grupos
 
-top 20 países más volátiles
+Ranking de los 20 países más volátiles
 
-6. Gráficos incluidos en el análisis
-hist_gdp_growth.png
+Guardados en output/figures/.
 
-Distribución del crecimiento anual del PBI. Permite observar si existen colas largas o valores extremos que influyen en la volatilidad.
-
-hist_openness_avg.png
-
-Distribución de la apertura comercial promedio por país. Confirma la heterogeneidad necesaria para testear la hipótesis.
-
-boxplot_volatilidad.png
-
-Dispersión de la volatilidad del crecimiento. Permite identificar países altamente inestables.
-
+6. Gráficos del estudio
 grafico_apertura_vs_volatilidad.png
 
-Relación entre apertura comercial promedio y volatilidad del crecimiento. Es el gráfico central del estudio.
+Muestra la relación entre la apertura comercial promedio y la volatilidad del crecimiento.
+Sirve para evaluar directamente la hipótesis.
 
 grafico_boxplot_grupos_apertura.png
 
-Comparación de la volatilidad entre países de alta y baja apertura.
+Compara la volatilidad entre países altamente abiertos y países poco abiertos.
+Visualiza si un grupo es más estable que el otro.
 
 grafico_top20_volatilidad.png
 
-Ranking de los 20 países más volátiles junto con su nivel de apertura.
+Lista los 20 países más volátiles e identifica su nivel de apertura.
+Ayuda a interpretar el perfil de las economías más inestables.
 
-7. Interpretación general de los resultados
+(EDA opcional)
 
-El análisis permite evaluar si los países con mayor integración comercial presentan menores oscilaciones en su crecimiento económico.
-La combinación de descriptivas, comparación de grupos, test t y regresión simple ofrece evidencia empírica para discutir la validez de la hipótesis.
+hist_gdp_growth.png: distribución del crecimiento del PBI.
 
-8. Autores
+hist_openness_avg.png: distribución de apertura comercial.
+
+boxplot_volatilidad.png: dispersión general de volatilidad.
+
+7. Principales resultados
+
+La relación lineal entre apertura comercial y volatilidad del crecimiento es leve pero negativa, coherente con la hipótesis.
+
+Al separar los países por nivel de apertura, se observa que el grupo de alta apertura tiende a mostrar menor volatilidad.
+
+El test t detecta diferencias entre grupos, aunque moderadas.
+
+La regresión lineal muestra un coeficiente negativo (mayor apertura → menor volatilidad), apoyando la hipótesis, aunque con una intensidad reducida.
+
+8. Conclusión
+
+La evidencia empírica apoya parcialmente la hipótesis planteada.
+Los datos muestran que los países más abiertos al comercio exhiben, en promedio, menor volatilidad del crecimiento, aunque la relación no es extremadamente fuerte.
+
+En conjunto, los resultados sugieren que la integración comercial contribuye a estabilizar las fluctuaciones del PBI, posiblemente gracias a:
+
+mayor diversificación productiva,
+
+mejor acceso a mercados externos,
+
+mayor capacidad de absorber shocks sectoriales.
+
+9. Autores
 
 Faustina Faílo
 
