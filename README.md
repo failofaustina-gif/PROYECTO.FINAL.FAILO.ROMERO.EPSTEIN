@@ -62,6 +62,7 @@ source("scripts/04_eda.R")
 source("scripts/05_descriptivas.R")
 source("scripts/06_inferencia.R")
 source("scripts/07_graficos.R")
+source("scripts/08_evaluacion_outliers.R")
 ```
 
 Esto genera automáticamente:
@@ -102,7 +103,11 @@ Resultados guardados en `output/tables/`.
 Gráficos finales:
 - apertura vs volatilidad  
 - comparación por grupos  
-- ranking top 20 países más volátiles  
+- ranking top 20 países más volátiles
+
+### **08_evaluacion_outliers.R**
+Compara la regresión y el test t con y sin países outliers en la volatilidad del PBI.
+Como los coeficientes y p-valores cambian poco, se concluye que los outliers no alteran las conclusiones y se justifica trabajar con la base completa.
 
 ---
 
