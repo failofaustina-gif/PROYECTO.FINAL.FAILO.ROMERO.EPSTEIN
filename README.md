@@ -1,5 +1,19 @@
 # Proyecto Final – Comercio Internacional y Volatilidad Macroeconómica
 
+## Indicaciones para correr el código:
+Es importante que se descomprima la carpeta que descarga todos los archivos. Luego abrir el proyecto de R que se llama "PROYECTO.FINAL" y ejecutar las lineas en el archivo de r. Se guardaran en la carpeta outpouts todos los gráficos y tablas:  
+
+```r
+source("scripts/01_import_limpieza.R")
+source("scripts/02_outliers_faltantes.R")
+source("scripts/03_procesamiento.R")
+source("scripts/04_eda.R")
+source("scripts/05_descriptivas.R")
+source("scripts/06_inferencia.R")
+source("scripts/07_graficos.R")
+source("scripts/08_evaluacion_outliers.R")
+```
+
 ## 1. Objetivo del estudio
 El proyecto analiza si la estructura comercial de un país y su nivel de apertura económica se relacionan con la volatilidad del crecimiento del PBI.
 
