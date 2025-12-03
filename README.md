@@ -1,7 +1,7 @@
 # Proyecto Final – Comercio Internacional y Volatilidad Macroeconómica
 
 ## Indicaciones para correr el código:
-Es importante que se descomprima la carpeta que descarga todos los archivos. Luego abrir el proyecto de R que se llama "PROYECTO.FINAL" y ejecutar las lineas en el archivo de r. Se guardaran en la carpeta outpouts todos los gráficos y tablas:  
+Es importante que se descomprima la carpeta que descarga todos los archivos. Luego abrir el proyecto de R que se llama "PROYECTO.FINAL" y ejecutar las lineas en el archivo de r. Se guardaran en la carpeta outputs todos los gráficos y tablas:  
 
 ```r
 source("scripts/01_import_limpieza.R")
